@@ -74,11 +74,7 @@ Finally, the quality of the unsupervised clusters is assessed by comparing them 
 Visualization: PCA is used to further reduce the 64-dimensional latent vectors into 2 dimensions, allowing for a 2D scatter plot visualization of the two clusters.
 
 
-Performance Metrics: The generated cluster labels (0 and 1) are compared to the true sentiment labels (positive/negative) to measure performance using several metrics:
-Adjusted Rand Index: Measures the similarity between the true and predicted clusterings.
-Normalized Mutual Information: An information-theoretic score to measure cluster quality.
-Clustering Accuracy: Calculated using the Hungarian algorithm to find the optimal matching between clusters and true labels, resulting in an accuracy of 50.76%.
-This final accuracy score, being very close to a random 50/50 chance, indicates that while the model successfully identified distinct groups in the data (as shown by the Silhouette Score), these groups did not strongly align with the human-defined concept of positive and negative sentiment.
+
 ---
 
 ## 🚀 Getting Started
