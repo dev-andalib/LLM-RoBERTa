@@ -1,6 +1,6 @@
 # Unsupervised Sentiment Analysis of IMDB Reviews using RoBERTa & K-Means
 
-![Project Banner](https://i.imgur.com/3Z6gJ4h.png)
+
 
 This project explores an unsupervised approach to sentiment analysis on the IMDB movie review dataset. It leverages embeddings from the powerful **RoBERTa** language model, reduces their dimensionality using an **Autoencoder**, and then performs clustering with **K-Means** to separate positive and negative reviews without using the original labels for training the final classifier.
 
@@ -57,21 +57,7 @@ Make sure you have Python 3.8+ and `pip` installed on your system. A GPU is high
 
 ### Installation
 
-1.  **Clone the repository:**
-    ```sh
-    git clone [https://github.com/your_username/your_repository_name.git](https://github.com/your_username/your_repository_name.git)
-    cd your_repository_name
-    ```
-2.  **Create and activate a virtual environment:**
-    ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
-3.  **Install the required packages from `requirements.txt`:**
-    ```sh
-    pip install -r requirements.txt
-    ```
-    *(Note: You can generate the `requirements.txt` file in your local environment by running `pip freeze > requirements.txt`)*
+It is a ipynb file, so run it in jupyter notebook or kaggle notebook, no installation required, unless you want to do it in VS code which would require environment creation and dependency installation.
 
 ---
 
