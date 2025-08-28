@@ -43,8 +43,42 @@ The primary goal of this project was to determine if meaningful sentiment cluste
 
 The architecture and data flow of the project can be visualized as follows:
 
-![Workflow Diagram](https://i.imgur.com/eBwzY3v.png)
+1. Data Loading and Preprocessing 🧹
+The process begins by preparing the raw text data from the IMDB dataset for the language model.
+Load Data: The IMDB Dataset.csv file, containing 50,000 movie reviews, is loaded into a pandas DataFrame. The review text and sentiment labels are separated.
+Clean Text: Several cleaning functions are applied sequentially to each review:
+HTML Tag Removal: Strips out HTML tags like <br />.
+Chat Slang Conversion: Expands common internet acronyms (e.g., "LOL" becomes "Laughing Out Loud") to their full form.
+Spell Correction: A significant step where the symspellpy library is used to correct spelling mistakes. The notebook applies this in a multi-pass process to improve text quality.
+URL and Case Normalization: Removes any URLs and converts all text to lowercase for consistency.
 
+2. Feature Extraction with RoBERTa 🤖
+Once the text is clean, the pre-trained RoBERTa model is used to convert each review into a high-dimensional numerical vector (embedding).
+Model Loading: The roberta-base model and its corresponding tokenizer are loaded from the Hugging Face transformers library.\
+Embedding Generation: Each preprocessed review is passed through the RoBERTa model. The model outputs a vector for each token in the review.
+CLS Token Extraction: For each review, the embedding of the special [CLS] token is extracted. This 768-dimensional vector serves as a semantic summary of the entire review's content.
+
+3. Dimensionality Reduction via Autoencoder 📉
+The 768-dimensional embeddings are dense and computationally heavy. An Autoencoder is trained to compress these vectors into a smaller, more manageable latent space while preserving essential information.
+Architecture: A PyTorch-based Autoencoder is built with an encoder that maps the input from 768 → 512 → 256 → 64 dimensions and a decoder that reconstructs it back to 768 dimensions.
+Training: The Autoencoder is trained for 15 epochs on the RoBERTa embeddings. Its goal is to minimize the reconstruction error (Mean Squared Error), forcing the 64-dimensional bottleneck layer to learn a rich, compressed representation of the data.
+Transformation: The trained encoder is then used to convert all 50,000 review embeddings from 768 dimensions into 64-dimensional latent vectors.
+
+4. Unsupervised Clustering with K-Means 📊
+With the reviews now represented as dense 64-dimensional vectors, the K-Means algorithm is used to group them without using the original sentiment labels.
+Clustering: K-Means is configured to find two clusters (k=2), hypothesizing that these will correspond to positive and negative sentiments.
+Optimization: The algorithm is run 10 times with different random starting points, and the best result is selected based on the one that yields the highest Silhouette Score (0.6121), indicating the best-defined clusters.
+
+5. Evaluation and Visualization 📈
+Finally, the quality of the unsupervised clusters is assessed by comparing them against the true labels and visualizing the results.
+Visualization: PCA is used to further reduce the 64-dimensional latent vectors into 2 dimensions, allowing for a 2D scatter plot visualization of the two clusters.
+
+
+Performance Metrics: The generated cluster labels (0 and 1) are compared to the true sentiment labels (positive/negative) to measure performance using several metrics:
+Adjusted Rand Index: Measures the similarity between the true and predicted clusterings.
+Normalized Mutual Information: An information-theoretic score to measure cluster quality.
+Clustering Accuracy: Calculated using the Hungarian algorithm to find the optimal matching between clusters and true labels, resulting in an accuracy of 50.76%.
+This final accuracy score, being very close to a random 50/50 chance, indicates that while the model successfully identified distinct groups in the data (as shown by the Silhouette Score), these groups did not strongly align with the human-defined concept of positive and negative sentiment.
 ---
 
 ## 🚀 Getting Started
